@@ -1,8 +1,8 @@
 import React from "react";
+import { connect } from "react-redux";
+import { signIn, signOut } from '../actions'
 
 class GoogleAuth extends React.Component{
-
-    state = { isSignedIn: null };
 
     componentDidMount() {
         /**window tells us that GAPI is a variable available on windows scope inside our browser. Rem we added
@@ -18,32 +18,50 @@ class GoogleAuth extends React.Component{
         window.gapi.load('client:auth2', () => {
             window.gapi.client.init({   //init() returns a Promise
                 clientId: process.env.REACT_APP_OAUTH_CLIENT_ID,
-                scope: 'email profile'
+                scope: 'email'
             }).then( () => {
                 // THIS.AUTH is set as an instance of GoogleAuth returned from our initialization of the library
                 // prepending 'this' makes it a global variable & accessible from any other function of this class
                 this.auth = window.gapi.auth2.getAuthInstance();
-                // Update component level state by adding a isSigned property; this will help re-render d component
-                // isSignedIn returns a boolean(true/false) if d user is signed in or not or this.Auth object isn't inititalized
-                this.setState({ isSignedIn: this.auth.isSignedIn.get() });
-                /**listen() is a method that we pass a callback to which is invoked anytime the user's signin status
-                 * changes. listen() works like an event listener for signIn status of a google user/account
+
+                /**once we initialize GAPI, we chain onto d returned Promise then, create an instance of d OAuth
+                 * object which contains several functions (signIn, signOut, listen, isSignedIn etc). We then invoke
+                 * our onAuthChange method whose purpose is to creates a redux action based upon d boolean value 
+                 * (representing d  authentication status of the user) that we pass it 
                  */
-                this.auth.isSignedIn.listen(this.onAuthChange)
+                this.onAuthChange(this.auth.isSignedIn.get());
+                
+                
+                /**listen() is a method that we pass a callback, which is invoked anytime the user's auth status
+                 * changes. The callback (onAuthChange) is usually called with a boolean argument of true/false
+                 * listen() works like an event listener for signIn status of a google user/account
+                 */
+                this.auth.isSignedIn.listen(this.onAuthChange);
             });
         });
     }
 
-    // callback that gets invoked anytime .listen() see the user signedIn status has changed
-    onAuthChange = () => {
-        this.setState({ isSignedIn: this.auth.isSignedIn.get() });
+    // callback that gets invoked by .listen() anytime it see the user authentication status has changed
+    // We update redux state base on boolean value.
+    onAuthChange = (isSignedIn) => {
+        if (isSignedIn) {
+            this.currentUser = {
+                id: this.auth.currentUser.get().getId(),
+                name: this.auth.currentUser.get().getBasicProfile().getName(),
+                email: this.auth.currentUser.get().getBasicProfile().getEmail()
+            };
+            this.props.signIn(this.currentUser)
+        } else {
+            this.props.signOut()
+        }
     }
+
 
     renderAuthButton() {
 
-        if (this.state.isSignedIn === null) {
+        if (this.props.isSignedIn === null) {
             return null;
-        } else if (this.state.isSignedIn) {
+        } else if (this.props.isSignedIn) {
             return <button onClick={this.auth.signOut} className="ui red google button">
                 <i className="google icon"></i> Sign Out
             </button>;
@@ -60,4 +78,8 @@ class GoogleAuth extends React.Component{
     }
 }
 
-export default GoogleAuth;
+const mapStateToProps = (state) => {
+    return { isSignedIn: state.auth.isSignedIn, user: state.auth.user }
+}
+
+export default connect(mapStateToProps, { signIn, signOut })(GoogleAuth);
