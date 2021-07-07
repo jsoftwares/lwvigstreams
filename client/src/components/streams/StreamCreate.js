@@ -1,5 +1,7 @@
 import { Component } from "react";
 import { Field, reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
+import { createStream } from '../../actions';
 
 
 class StreamCreate extends Component {
@@ -17,8 +19,9 @@ class StreamCreate extends Component {
     // in order to use this inside this fn due to the context of THIS in class, we convert it to an arror fn
     renderInput = ({input, label, meta}) => {
         // return <input value={formProps.input.value} onChange={formProps.input.onChange} />
+        const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
         return (
-            <div className="field error">
+            <div className={className}>
                 <label>{label}</label>
                 <input {...input} autoComplete="off" />
                 { this.renderError(meta) }
@@ -26,8 +29,9 @@ class StreamCreate extends Component {
         );
     }
 
-    onSubmit(formValues) {
+    onSubmit = (formValues) => {
         // console.log(formValues);
+        this.props.createStream(formValues);
     }
 
     render() {
@@ -64,7 +68,9 @@ const validate = formValues => {
     return errors;
 }
 
-export default reduxForm({ form: 'streamCreate', validate: validate })(StreamCreate);
+// export default connect()(reduxForm({ form: 'streamCreate', validate })(StreamCreate));
+const formWrapped = reduxForm({ form: 'streamCreate', validate})(StreamCreate)
+export default connect(null, { createStream})(formWrapped);
 /**REDUX-FORM() gives us alot of props that we can now use to manipulate our form (get values from d store to d 
  * form and from d form back to the redux store). The 'form' property we passed to reduxForm() is used to give d 
  * form in this component a name. 'validate' property is used to track errors on each form field, it has a value

@@ -11,8 +11,8 @@
 # production
 /**/build
 
-#API
-/**/db.json
+# API
+/api/db.json
 
 # misc
 /**/.DS_Store
