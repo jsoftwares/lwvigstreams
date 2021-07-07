@@ -64,8 +64,7 @@ const validate = formValues => {
     return errors;
 }
 
-export default reduxForm({ 
-    form: 'streamCreate', validate: validate})(StreamCreate);
+export default reduxForm({ form: 'streamCreate', validate: validate })(StreamCreate);
 /**REDUX-FORM() gives us alot of props that we can now use to manipulate our form (get values from d store to d 
  * form and from d form back to the redux store). The 'form' property we passed to reduxForm() is used to give d 
  * form in this component a name. 'validate' property is used to track errors on each form field, it has a value
