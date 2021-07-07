@@ -15,30 +15,33 @@ class GoogleAuth extends React.Component{
          * After it is loaded, we initialize d oauth client with our OAuth client ID & also specify d scopes (dspecifies 
          * which data of the user your application will use.)
          */
-        window.gapi.load('client:auth2', () => {
-            window.gapi.client.init({   //init() returns a Promise
-                clientId: process.env.REACT_APP_OAUTH_CLIENT_ID,
-                scope: 'email'
-            }).then( () => {
-                // THIS.AUTH is set as an instance of GoogleAuth returned from our initialization of the library
-                // prepending 'this' makes it a global variable & accessible from any other function of this class
-                this.auth = window.gapi.auth2.getAuthInstance();
-
-                /**once we initialize GAPI, we chain onto d returned Promise then, create an instance of d OAuth
-                 * object which contains several functions (signIn, signOut, listen, isSignedIn etc). We then invoke
-                 * our onAuthChange method whose purpose is to creates a redux action based upon d boolean value 
-                 * (representing d  authentication status of the user) that we pass it 
-                 */
-                this.onAuthChange(this.auth.isSignedIn.get());
-                
-                
-                /**listen() is a method that we pass a callback, which is invoked anytime the user's auth status
-                 * changes. The callback (onAuthChange) is usually called with a boolean argument of true/false
-                 * listen() works like an event listener for signIn status of a google user/account
-                 */
-                this.auth.isSignedIn.listen(this.onAuthChange);
+        if (window.gapi) {
+            
+            window.gapi.load('client:auth2', () => {
+                window.gapi.client.init({   //init() returns a Promise
+                    clientId: process.env.REACT_APP_OAUTH_CLIENT_ID,
+                    scope: 'email'
+                }).then( () => {
+                    // THIS.AUTH is set as an instance of GoogleAuth returned from our initialization of the library
+                    // prepending 'this' makes it a global variable & accessible from any other function of this class
+                    this.auth = window.gapi.auth2.getAuthInstance();
+    
+                    /**once we initialize GAPI, we chain onto d returned Promise then, create an instance of d OAuth
+                     * object which contains several functions (signIn, signOut, listen, isSignedIn etc). We then invoke
+                     * our onAuthChange method whose purpose is to creates a redux action based upon d boolean value 
+                     * (representing d  authentication status of the user) that we pass it 
+                     */
+                    this.onAuthChange(this.auth.isSignedIn.get());
+                    
+                    
+                    /**listen() is a method that we pass a callback, which is invoked anytime the user's auth status
+                     * changes. The callback (onAuthChange) is usually called with a boolean argument of true/false
+                     * listen() works like an event listener for signIn status of a google user/account
+                     */
+                    this.auth.isSignedIn.listen(this.onAuthChange);
+                });
             });
-        });
+        }
     }
 
     // callback that gets invoked by .listen() anytime it see the user authentication status has changed
