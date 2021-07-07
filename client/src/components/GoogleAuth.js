@@ -15,7 +15,7 @@ class GoogleAuth extends React.Component{
          * After it is loaded, we initialize d oauth client with our OAuth client ID & also specify d scopes (dspecifies 
          * which data of the user your application will use.)
          */
-        if (window.gapi) {
+        // if (window.gapi) {
             
             window.gapi.load('client:auth2', () => {
                 window.gapi.client.init({   //init() returns a Promise
@@ -41,7 +41,7 @@ class GoogleAuth extends React.Component{
                     this.auth.isSignedIn.listen(this.onAuthChange);
                 });
             });
-        }
+        // }
     }
 
     // callback that gets invoked by .listen() anytime it see the user authentication status has changed
@@ -53,14 +53,14 @@ class GoogleAuth extends React.Component{
                 name: this.auth.currentUser.get().getBasicProfile().getName(),
                 email: this.auth.currentUser.get().getBasicProfile().getEmail()
             };
-            this.props.signIn(this.currentUser)
+            this.props.signIn(this.currentUser);
         } else {
-            this.props.signOut()
+            this.props.signOut();
         }
     }
 
 
-    renderAuthButton() {
+    renderAuthButton = () => {
 
         if (this.props.isSignedIn === null) {
             return null;
