@@ -12,7 +12,7 @@
 /**/build
 
 # API
-/api/db.json
+/api/.db.json
 
 # misc
 /**/.DS_Store

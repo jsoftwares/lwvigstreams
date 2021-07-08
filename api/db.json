@@ -1,20 +1,3 @@
 {
-  "streams": [
-    {
-      "title": "Healing Streams with Pastor Chris",
-      "description": "A healing service where the power of God will be manifested mightily.",
-      "id": 1
-    },
-    {
-      "title": "CS50 Nigeria",
-      "description": "An introduction to the intellectuals of computer science. Nigeria edition.",
-      "id": 2
-    },
-    {
-      "title": "GTBank Zenter BI Training",
-      "description": "Zenter BI system training for GT Bank Nigeria staff for onboarding the bank to the system.",
-      "userId": "115636056116185976475",
-      "id": 3
-    }
-  ]
+    "streams": []
 }
