@@ -1,4 +1,5 @@
-import createHistory from 'history/createBrowserHistory';
+// import createHistory from 'history/createBrowserHistory';
+import { createBrowserHistory } from 'history';
 
 /**history package is installed automatically with react-router-dom. It's a separate library that react-router-dom
  * depends upon as a dependency.
@@ -8,4 +9,4 @@ import createHistory from 'history/createBrowserHistory';
  * which manages it history object itself.
  */
 
-export default createHistory();
+export default createBrowserHistory();

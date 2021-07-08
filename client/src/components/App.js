@@ -10,13 +10,16 @@ import history from '../history';
 
 const App = () => {
     return (
+        /**bcos Route is rendering d components with params, react-router-dom adds some props to d rendered compnent
+         * one which include match from which we can access d url params. other are history, location etc
+         */
     <div className="ui container">
         <Router history={history}>
             <div>
                 <Header />
                 <Route path="/" exact component={StreamList} />
                 <Route path="/streams/new" exact component={StreamCreate} />
-                <Route path="/streams/edit" exact component={StreamEdit} />
+                <Route path="/streams/edit/:id" exact component={StreamEdit} />
                 <Route path="/streams/show" exact component={StreamShow} />
                 <Route path="/streams/delete" exact component={StreamDelete} />
             </div>
