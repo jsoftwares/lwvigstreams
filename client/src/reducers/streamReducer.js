@@ -1,15 +1,16 @@
 import _ from 'lodash';
 import { CREATE_STREAM, GET_STREAM, GET_STREAMS, EDIT_STREAM, DELETE_STREAM } from '../actions/types';
 
+// We are storing streams in an object rather as an array in which it is returned, so that its easier to edit & delete streams
 export default (state={}, action) => {
     switch (action.type) {
+        /**mapKey() is a lodash fn that takes an array & returns an object. D keys of this new object are going to be taken from each
+         * individaul record inside d array. so we called mapKeys() with an array of streams we got from d api, & pass a string of ID
+         * as 2nd argument which tell lodash foreach of d object inside d original array, use a key taken from d ID property of each
+         * one to create that record insise d new object. ..._.mapKeys(), d ... takes d key-vlaue pairs from d big object returned 
+         * from mapKeys() & adds them to d new overal big object that gets created by { ..state }
+         */
         case GET_STREAMS:
-            /**mapKey() is a lodash fn that takes an array & returns an object. D keys of this new object are going to be taken from each
-             * individaul record inside d array. so we called mapKeys() with an array of streams we got from d api, & pass a string of ID
-             * as 2nd argument which tell lodash foreach of d object inside d original array, use a key taken from d ID property of each
-             * one to create that record insise d new object. ..._.mapKeys(), d ... takes d key-vlaue pairs from d big object returned 
-             * from mapKeys() & adds them to d new overal big object that gets created by { ..state }
-             */
             return { ...state, ..._.mapKeys(action.payload, 'id') };
         case GET_STREAM:
             //[action.payload.id]- key interpolation. specifies a key based on d new object we're spreading
