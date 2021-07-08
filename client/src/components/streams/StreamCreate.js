@@ -1,10 +1,10 @@
-import { Component } from "react";
+import React from "react";
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { createStream } from '../../actions';
 
 
-class StreamCreate extends Component {
+class StreamCreate extends React.Component {
 
     renderError(meta) {
         if (meta.touched && meta.error) {
