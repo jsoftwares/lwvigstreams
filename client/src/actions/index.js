@@ -35,12 +35,13 @@ export const getStream = id => async dispatch => {
 
 export const editStream = (id, formValues) => async dispatch => {
     const { data } = await streams.patch(`/streams/${id}`, formValues);
-    dispatch({ type: GET_STREAM, payload: data });
+    dispatch({ type: EDIT_STREAM, payload: data });
     history.push('/');
 }; 
 
 export const deleteStream = id => async dispatch => {
     await streams.delete(`/streams/${id}`);
-    dispatch({ type: GET_STREAM, payload: id });
+    dispatch({ type: DELETE_STREAM, payload: id });
+    history.push('/');
 }; 
 
