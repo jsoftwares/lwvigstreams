@@ -23,9 +23,9 @@ class StreamShow extends React.Component {
     /**  CLEANUP VIDEO PLAYER RESOURC: tells player to stop attempting to stream video & detach itself from d <video />
      * compoent when a user navigate away from dis component
     */
-   
+
     componentWillUnmount(){
-        this.player.destroy()
+        this.player.destroy();
     }
 
 
