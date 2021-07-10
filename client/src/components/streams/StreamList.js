@@ -28,7 +28,7 @@ const StreamList = (props) => {
                     {manageStream(stream)}
                     <i className="large middle aligned icon camera" />
                     <div className="content">
-                        <div>{stream.title}</div>
+                        <Link to={`/streams/${stream.id}`} className="header">{stream.title}</Link>
                         <div className="description">{stream.description}</div>
                     </div>
                 </div>
